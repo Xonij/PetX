@@ -15,7 +15,7 @@ public class enemyMovement : MonoBehaviour {
 
     void Start ()
     {
-        enemysAnimator = GetComponent<Animator>();
+        enemysAnimator = GetComponentInChildren<Animator>();
         player = GameObject.FindWithTag("Player");
         gm = GameObject.FindWithTag("GameManagementTag");
     }
@@ -62,7 +62,7 @@ public class enemyMovement : MonoBehaviour {
     IEnumerator deathStateOperation()
     {
         yield return new WaitForSeconds(2f);
-
+        this.gameObject.GetComponent<lootDrop>().itemAssigningAndSpawn();
         Destroy(gameObject);
     }
     void OnTriggerEnter2D(Collider2D other)
