@@ -123,6 +123,7 @@ public class playerButtonControl : MonoBehaviour {
         this.gameObject.transform.position = bedPosition;
         pet.gameObject.transform.position = bedPosition;
         sleep.gameObject.SetActive(false);
+        gm.GetComponent<gamemanagement>().day++;
         Cursor.visible = false; Time.timeScale = 1;
     }
     public void exitSleepWindow() { sleep.gameObject.SetActive(false); Cursor.visible = false; Time.timeScale = 1; }

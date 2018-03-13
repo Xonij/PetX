@@ -52,10 +52,10 @@ public class playerMovement : MonoBehaviour {
                 transform.Translate(Vector3.right * speed * Time.deltaTime);
             }
 
-            if (Input.GetButton("up")) { animator.SetInteger("dirInt", 1); }
-            else if (Input.GetButton("down")) { animator.SetInteger("dirInt", 2); }
-            else if (Input.GetButton("left")) { animator.SetInteger("dirInt", 3); }
-            else if (Input.GetButton("right")) { animator.SetInteger("dirInt", 4); }
+            if (Input.GetButton("up") || Input.GetKey(KeyCode.UpArrow)) { animator.SetInteger("dirInt", 1); }
+            else if (Input.GetButton("down") || Input.GetKey(KeyCode.DownArrow)) { animator.SetInteger("dirInt", 2); }
+            else if (Input.GetButton("left") || Input.GetKey(KeyCode.LeftArrow)) { animator.SetInteger("dirInt", 3); }
+            else if (Input.GetButton("right") || Input.GetKey(KeyCode.RightArrow)) { animator.SetInteger("dirInt", 4); }
             else { animator.SetInteger("dirInt", 0); }
         }
     }

@@ -45,13 +45,13 @@ public class houseSceneVersion : MonoBehaviour {
         if (other.gameObject.tag == "Player" && furnitureType == FurnitureType.bed)
         {
             player.GetComponent<playerButtonControl>().sleep.gameObject.SetActive(true);
-            Time.timeScale = 0;
             Cursor.visible = true;
             player.GetComponent<playerButtonControl>().bedPosition = this.gameObject.transform.position;
         }
     }
     void OnTriggerExit2D(Collider2D other)
     {
+        player.GetComponent<playerButtonControl>().sleep.gameObject.SetActive(false);
     }
 }
 public enum FurnitureType

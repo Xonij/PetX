@@ -7,10 +7,12 @@ public class gamemanagement : MonoBehaviour {
 
     [Header("World")]
     public int day;
+    public int money;
     [Range(0,24)]
     public int timeOfDay;
     public Sprite[] timeVisuals;
     public Image kello;
+    public Text dayText;
     [Header("__________________________")]
     public Monsters Pet;
     public Items chosenItem;
@@ -40,6 +42,7 @@ public class gamemanagement : MonoBehaviour {
 	}
     public void clockChanger()
     {
+        dayText.text = day.ToString();
         if (timeOfDay < 12)
         {
             for (int t = 0; t < timeVisuals.Length; t++)
@@ -124,6 +127,7 @@ public class Monsters
     public int strength, agility, wisdom , luck;    //upgradable stats
     public int health, hunger, happyness, cleaniness;    //beauty
     public Sprite petVisual;
+    public Sprite[] petInWorldTextures;
 }
 [System.Serializable]
 public class Buffs
