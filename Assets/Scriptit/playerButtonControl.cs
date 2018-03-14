@@ -54,6 +54,7 @@ public class playerButtonControl : MonoBehaviour {
             }
             else if (openWindow == openCanvas.NONE)
             {
+                gm.GetComponent<gamemanagement>().reppuVisuals();
                 reppu.SetActive(true);
                 Time.timeScale = 0;
                 Cursor.visible = true;
@@ -87,6 +88,7 @@ public class playerButtonControl : MonoBehaviour {
                 if (EventSystem.current.currentSelectedGameObject.name == "b"+g.ToString())
                 {
                     gm.chosenItem = gm.playersBackpack[g-1];
+                    gm.GetComponent<gamemanagement>().reppuItemImg.sprite = gm.playersBackpack[g - 1].itemImage;
                 }
             }
         }
