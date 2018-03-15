@@ -24,7 +24,6 @@ public class npcColliderVersion : MonoBehaviour {
     {
         if (seenThisNpc == true && Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("next text slide");
             nextText();
         }
     }

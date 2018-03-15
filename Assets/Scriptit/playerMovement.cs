@@ -9,6 +9,8 @@ public class playerMovement : MonoBehaviour {
     public GameObject skin;
     public Sprite[] playerSprites;
     private Animator animator;
+    [Range(0,100)]
+    public float stamina;
 
     public Vector2 speed = new Vector2(1, 1);
 
@@ -20,13 +22,19 @@ public class playerMovement : MonoBehaviour {
 	void Update ()
     {
         // Sprinting speed
-        if (Input.GetButton("run"))
+        if (Input.GetButton("run")&&stamina > 0)
         {
             sprint = 4f;
+            stamina = stamina -1f;
         }
         else
         {
             sprint = 2f;
+            if (stamina < 100)
+            {
+                if (!Input.GetButtonUp("run"))
+                { stamina += 0.3f; }
+            }
         }
         
         float inputX = Input.GetAxis("Horizontal");
@@ -49,8 +57,6 @@ public class playerMovement : MonoBehaviour {
 
         attacking(); 
 	}
-    
-
     // Updates animator float that changes player sprite direction
     private void FixedUpdate()
     {
@@ -119,16 +125,14 @@ public class playerMovement : MonoBehaviour {
                 //skin.GetComponent<SpriteRenderer>().sprite = playerSprites[3];
                 GetComponent<playerAttacking>().DirectionFacing = directionFacing.right;
                 //transform.Translate(Vector3.right * speed * Time.deltaTime);
-            }
-            
+            }    
             /*
             if (Input.GetButton("up") || Input.GetKey(KeyCode.UpArrow)) { animator.SetInteger("dirInt", 1); }
             else if (Input.GetButton("down") || Input.GetKey(KeyCode.DownArrow)) { animator.SetInteger("dirInt", 2); }
             else if (Input.GetButton("left") || Input.GetKey(KeyCode.LeftArrow)) { animator.SetInteger("dirInt", 3); }
             else if (Input.GetButton("right") || Input.GetKey(KeyCode.RightArrow)) { animator.SetInteger("dirInt", 4); }
             else { animator.SetInteger("dirInt", 0); }
-            */
-            
+            */    
         }
     }
 
@@ -140,7 +144,7 @@ public class playerMovement : MonoBehaviour {
         }
         if (other.gameObject.tag == "Enemy")
         {
-           // this.gameObject.GetComponent<playerAttacking>().playerHealth--;
+           this.gameObject.GetComponent<playerAttacking>().playerHealth--;
         }
     }
     void OnCollisionStay2D(Collision2D other)

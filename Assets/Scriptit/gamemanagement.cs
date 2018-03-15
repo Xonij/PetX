@@ -5,9 +5,16 @@ using UnityEngine.UI;
 
 public class gamemanagement : MonoBehaviour {
 
+    GameObject player;
     [Header("World")]
     public int day;
+    [Range(0,1000)]
     public int money;
+    [Range(0, 100)]
+    public float mana;
+    public Image uIStamina, uIMana;
+    float manaCalculated,staminaCalculated;
+    public Text cashText;
     [Range(0,24)]
     public int timeOfDay;
     public Sprite[] timeVisuals;
@@ -31,6 +38,7 @@ public class gamemanagement : MonoBehaviour {
     public Image reppuItemImg;
 
 	void Start () {
+        player = GameObject.FindWithTag("Player");
         Pet = AllMonsters[0];
         Cursor.visible = false;
         //StartCoroutine(evolutionUI());
@@ -39,6 +47,9 @@ public class gamemanagement : MonoBehaviour {
 	void Update ()
     {
         clockChanger();
+        moneyCounter();
+        staminaBar();
+        manaBar();
 	}
     public void clockChanger()
     {
@@ -66,6 +77,20 @@ public class gamemanagement : MonoBehaviour {
             if (timeOfDay == 23) { kello.sprite = timeVisuals[11]; }
             if (timeOfDay == 24) { kello.sprite = timeVisuals[0]; }
         }
+    }
+    public void moneyCounter()
+    {
+        cashText.text = "Money: " + money;
+    }
+    public void manaBar()
+    {
+        manaCalculated = mana / 100f;
+        uIMana.fillAmount = manaCalculated;
+    }
+    public void staminaBar()
+    {
+        staminaCalculated = player.GetComponent<playerMovement>().stamina / 100f;
+        uIStamina.fillAmount =staminaCalculated;
     }
     public void currentPetAttackGain()
     {
