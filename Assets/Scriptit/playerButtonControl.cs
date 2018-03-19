@@ -93,6 +93,28 @@ public class playerButtonControl : MonoBehaviour {
             }
         }
     }
+    public void MonsterCatalog()
+    {
+        if (EventSystem.current.currentSelectedGameObject != null)
+        {
+            for (int u = 0; u < gm.GetComponent<gamemanagement>().AllMonsters.Length; u++)
+            {
+                if(gm.GetComponent<gamemanagement>().AllMonsters[u].petInWorldPrefab != null)
+                {
+                    gm.GetComponent<gamemanagement>().AllMonsters[u].petInWorldPrefab.SetActive(false);
+                }
+            }
+            for (int g = 0; g < gm.GetComponent<gamemanagement>().AllMonsters.Length; g++)
+            {
+                if (EventSystem.current.currentSelectedGameObject.name == gm.GetComponent<gamemanagement>().AllMonsters[g].name)
+                {
+                    Debug.Log(EventSystem.current.currentSelectedGameObject.name);
+                    gm.GetComponent<gamemanagement>().Pet = gm.GetComponent<gamemanagement>().AllMonsters[g];
+                    gm.GetComponent<gamemanagement>().AllMonsters[g].petInWorldPrefab.SetActive(true);
+                }
+            }
+        }
+    }
     #region mapButtons
     public void mapW1() { waypointIntToMoveTo = 1; waypointTp(); }
     public void mapW2() { waypointIntToMoveTo = 2; waypointTp(); }
@@ -120,6 +142,7 @@ public class playerButtonControl : MonoBehaviour {
         }
         waypointIntToMoveTo = 0;
     }
+
     public void sleepButton()
     {
         this.gameObject.transform.position = bedPosition;

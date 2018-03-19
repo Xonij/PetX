@@ -152,7 +152,7 @@ public class Monsters
     public int strength, agility, wisdom , luck;    //upgradable stats
     public int health, hunger, happyness, cleaniness;    //beauty
     public Sprite petVisual;
-    public Sprite[] petInWorldTextures;
+    public GameObject petInWorldPrefab;
 }
 [System.Serializable]
 public class Buffs
