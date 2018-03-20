@@ -6,13 +6,13 @@ using UnityEngine.EventSystems;
 
 public class shopVendor : MonoBehaviour
 {
-    public GameObject shopCanvas;
-    public Image shopItemImg;
+    public GameObject shopCanvas,sellCanvas;
+    public Image shopItemImg,sellItemImg;
     GameObject gm;
     string shopitemnametemp;
     bool allowBuy = false;
-    public itemsInShop[] canvasButtons;
-    public int itemToBuyINT=10;
+    public itemsInShop[] buyButtons,sellButtons;
+    public int itemToBuyINT=10,itemToSellINT=10;
 
 	void Start ()
     {
@@ -42,8 +42,53 @@ public class shopVendor : MonoBehaviour
     public void exit()
     {
         shopCanvas.SetActive(false);
+        sellCanvas.SetActive(false);
         Cursor.visible = false;
         Time.timeScale = 1;
+    }
+    //sell screen
+    public void sell()
+    {
+        sellSCreenImages();
+
+        for (int p = 0; p < 10; p++)
+        {//valittu tuote listalta
+            if (p == itemToSellINT)
+            {
+                for (int y = 0; y < gm.GetComponent<gamemanagement>().AllItems.Length; y++)
+                {
+                    //saman niminen item allitems listalta
+                    if (gm.GetComponent<gamemanagement>().AllItems[y].name == sellButtons[p].itemNameHolder.text)
+                    {
+                        gm.GetComponent<gamemanagement>().money = gm.GetComponent<gamemanagement>().money + sellButtons[p].cost;
+                        sellButtons[p].itemNameHolder.text = "";
+                        gm.GetComponent<gamemanagement>().playersBackpack[p].name = "";
+                        gm.GetComponent<gamemanagement>().playersBackpack[p].description = "";
+                        gm.GetComponent<gamemanagement>().playersBackpack[p].itemPropertyInt = 0;
+                        gm.GetComponent<gamemanagement>().playersBackpack[p].sellCost = 0;
+                        gm.GetComponent<gamemanagement>().playersBackpack[p].itemImage = null;
+                        return;
+                    }
+                }
+            }
+        }
+        sellSCreenImages();
+    }
+    public void toSellScreen()
+    {
+        shopCanvas.SetActive(false);
+        sellCanvas.SetActive(true);
+        for (int intti = 0; intti < 10; intti++)
+        {
+            sellButtons[intti].itemNameHolder.text = gm.GetComponent<gamemanagement>().playersBackpack[intti].name;
+            if(gm.GetComponent<gamemanagement>().playersBackpack[intti].name == sellButtons[intti].itemNameHolder.text)
+            { sellButtons[intti].cost = gm.GetComponent<gamemanagement>().playersBackpack[intti].sellCost; }
+        }
+    }
+    public void backToBuyScreen()
+    {
+        sellCanvas.SetActive(false);
+        shopCanvas.SetActive(true);
     }
     #endregion
     public void wendorItemBuying()
@@ -55,23 +100,27 @@ public class shopVendor : MonoBehaviour
                 for (int y=0;y< gm.GetComponent<gamemanagement>().AllItems.Length; y++)
                 {
                     //saman niminen item allitems listalta
-                    if (gm.GetComponent<gamemanagement>().AllItems[y].name == canvasButtons[p].itemNameHolder.text)
+                    if (gm.GetComponent<gamemanagement>().AllItems[y].name == buyButtons[p].itemNameHolder.text)
                     {
                         for (int u = 0; u < gm.GetComponent<gamemanagement>().playersBackpack.Length; u++)
                         {//space in backpack
-                            if (gm.GetComponent<gamemanagement>().playersBackpack[u].name == "" && gm.GetComponent<gamemanagement>().money > canvasButtons[p].cost && allowBuy == true)
+                            if(gm.GetComponent<gamemanagement>().playersBackpack[u] != null)
                             {
-                                gm.GetComponent<gamemanagement>().playersBackpack[u] = gm.GetComponent<gamemanagement>().AllItems[y];
-                                gm.GetComponent<gamemanagement>().money = gm.GetComponent<gamemanagement>().money - canvasButtons[p].cost;
-                                allowBuy = false;
-                                return;
-                            }
-                            else if (allowBuy == true && gm.GetComponent<gamemanagement>().money < canvasButtons[p].cost)
-                            {
-                                Debug.Log("NOT ENOUGH MONEY");
-                                shopCanvas.SetActive(false);
-                                Cursor.visible = false;
-                                Time.timeScale = 1;
+                                if (gm.GetComponent<gamemanagement>().playersBackpack[u].name == "" && gm.GetComponent<gamemanagement>().money > buyButtons[p].cost && allowBuy == true)
+                                {
+                                    Debug.Log("BOUGHT A THING");
+                                    gm.GetComponent<gamemanagement>().playersBackpack[u] = gm.GetComponent<gamemanagement>().AllItems[y];
+                                    gm.GetComponent<gamemanagement>().money = gm.GetComponent<gamemanagement>().money - buyButtons[p].cost;
+                                    allowBuy = false;
+                                    return;
+                                }
+                                else if (allowBuy == true && gm.GetComponent<gamemanagement>().money < buyButtons[p].cost)
+                                {
+                                    Debug.Log("NOT ENOUGH MONEY");
+                                    shopCanvas.SetActive(false);
+                                    Cursor.visible = false;
+                                    Time.timeScale = 1;
+                                }
                             }
                         }
                     }
@@ -84,16 +133,46 @@ public class shopVendor : MonoBehaviour
     {
         if (EventSystem.current.currentSelectedGameObject != null)
         {
-            if (EventSystem.current.currentSelectedGameObject.name == "s1") { shopitemnametemp = canvasButtons[0].itemNameHolder.text; }
-            if (EventSystem.current.currentSelectedGameObject.name == "s2") { shopitemnametemp = canvasButtons[1].itemNameHolder.text; }
-            if (EventSystem.current.currentSelectedGameObject.name == "s3") { shopitemnametemp = canvasButtons[2].itemNameHolder.text; }
-            if (EventSystem.current.currentSelectedGameObject.name == "s4") { shopitemnametemp = canvasButtons[3].itemNameHolder.text; }
-            if (EventSystem.current.currentSelectedGameObject.name == "s5") { shopitemnametemp = canvasButtons[4].itemNameHolder.text; }
-            if (EventSystem.current.currentSelectedGameObject.name == "s6") { shopitemnametemp = canvasButtons[5].itemNameHolder.text; }
-            if (EventSystem.current.currentSelectedGameObject.name == "s7") { shopitemnametemp = canvasButtons[6].itemNameHolder.text; }
-            if (EventSystem.current.currentSelectedGameObject.name == "s8") { shopitemnametemp = canvasButtons[7].itemNameHolder.text; }
-            if (EventSystem.current.currentSelectedGameObject.name == "s9") { shopitemnametemp = canvasButtons[8].itemNameHolder.text; }
-            if (EventSystem.current.currentSelectedGameObject.name == "s10") { shopitemnametemp = canvasButtons[9].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s1") { shopitemnametemp = buyButtons[0].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s2") { shopitemnametemp = buyButtons[1].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s3") { shopitemnametemp = buyButtons[2].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s4") { shopitemnametemp = buyButtons[3].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s5") { shopitemnametemp = buyButtons[4].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s6") { shopitemnametemp = buyButtons[5].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s7") { shopitemnametemp = buyButtons[6].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s8") { shopitemnametemp = buyButtons[7].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s9") { shopitemnametemp = buyButtons[8].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s10") { shopitemnametemp = buyButtons[9].itemNameHolder.text; }
+
+            for (int g = 0; g < 10; g++)
+            {
+                for (int r = 0; r < gm.GetComponent<gamemanagement>().AllItems.Length; r++)
+                {
+                    if (gm.GetComponent<gamemanagement>().AllItems[r].name != "")
+                    {
+                        if (gm.GetComponent<gamemanagement>().AllItems[r].name == shopitemnametemp)
+                        {
+                            shopItemImg.sprite = gm.GetComponent<gamemanagement>().AllItems[r].itemImage;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public void sellSCreenImages()
+    {
+        if (EventSystem.current.currentSelectedGameObject != null)
+        {
+            if (EventSystem.current.currentSelectedGameObject.name == "s1") { itemToSellINT = 0; shopitemnametemp = sellButtons[0].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s2") { itemToSellINT = 1; shopitemnametemp = sellButtons[1].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s3") { itemToSellINT = 2; shopitemnametemp = sellButtons[2].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s4") { itemToSellINT = 3; shopitemnametemp = sellButtons[3].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s5") { itemToSellINT = 4; shopitemnametemp = sellButtons[4].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s6") { itemToSellINT = 5; shopitemnametemp = sellButtons[5].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s7") { itemToSellINT = 6; shopitemnametemp = sellButtons[6].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s8") { itemToSellINT = 7; shopitemnametemp = sellButtons[7].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s9") { itemToSellINT = 8; shopitemnametemp = sellButtons[8].itemNameHolder.text; }
+            if (EventSystem.current.currentSelectedGameObject.name == "s10") { itemToSellINT = 9; shopitemnametemp = sellButtons[9].itemNameHolder.text; }
 
             for (int g = 0; g < 10; g++)
             {
@@ -101,8 +180,9 @@ public class shopVendor : MonoBehaviour
                 {
                     if (gm.GetComponent<gamemanagement>().AllItems[g].name == shopitemnametemp)
                     {
-                        shopItemImg.sprite = gm.GetComponent<gamemanagement>().AllItems[g].itemImage;
+                        sellItemImg.sprite = gm.GetComponent<gamemanagement>().AllItems[g].itemImage;
                     }
+                    else { return; }
                 }
             }
         }

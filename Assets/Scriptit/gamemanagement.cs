@@ -165,7 +165,7 @@ public class Buffs
 public class Items
 {
     public string name, description;
-    public int itemPropertyInt;
+    public int itemPropertyInt,sellCost;
     public Sprite itemImage;
 }
 [System.Serializable]
