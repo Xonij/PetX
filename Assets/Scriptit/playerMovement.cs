@@ -25,7 +25,7 @@ public class playerMovement : MonoBehaviour {
         if (Input.GetButton("run")&&stamina > 0)
         {
             sprint = 4f;
-            stamina = stamina -1f;
+            stamina = stamina -0.5f;
         }
         else
         {
@@ -33,7 +33,7 @@ public class playerMovement : MonoBehaviour {
             if (stamina < 100)
             {
                 if (!Input.GetButtonUp("run"))
-                { stamina += 0.3f; }
+                { stamina += 0.5f; }
             }
         }
         
